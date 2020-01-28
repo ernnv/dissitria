@@ -43,17 +43,33 @@ namespace Combat {
 		public System.Action OnDamaged { get; set; }
 		public System.Action OnDeath { get; set; }
 
+
+
+		// TO BE REPLACED WITH DATA FROM SCRIPTABLE OBJECT ( BaseEntity )
+		[Space, Header("Character Info")]
+
 		public string Name;
 
 		public float CurrentHP;
 		public float MaxHP;
 		public float Speed;
 
+		[Space]
+
+		public Sprite PortraitSprite;
+		public Sprite HandleSprite;
+
 		public virtual void TakeDamage(int Damage) {
 			CurrentHP -= Damage;
 			OnDamaged();
+
+			// Example, this next method could be moved to OnDamaged()
+			FloatingTextPopup.SpawnNew(Damage, transform.position + 3 * Vector3.up);
+
 			// We will call OnDeath once the hp animation is complete.
+			// Currently, death is not implemented, as all we have is a single fight scene.
 		}
+
 	}
 
 }

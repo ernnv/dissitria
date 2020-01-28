@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Combat.UI;
+using Sirenix.OdinInspector;
 
 namespace Combat {
 	public class BattleManager : MonoBehaviour {
 
-		#region Singleton
+		// Singleton pattern. Makes the class accessible from anywhere in the code.
 		public static BattleManager instance;
-		void Awake() {
-			if (instance) {
-				DestroyImmediate(gameObject);
-			}
-			else {
-				instance = this;
-				DontDestroyOnLoad(gameObject);
-			}
-		}
-		#endregion
+		void Awake() { instance = this; }
 
 		public GameObject basePanel;
 		public CombatActionPanelUI actionPanelUI;
-		public CombatTargetSelector targetSelector;
-		public CombatHealthUpdater combatHealthUpdater; 
+		public CombatPortraitManager portraitManager; 
 
 		enum BattleState { NONE, WAIT_FOR_NEXT_TURN, WAIT_FOR_USER_ACTION }
 
@@ -35,6 +26,7 @@ namespace Combat {
 		// Determines which actor will take a turn.
 		List<ActionPointsResolver> turnResolvers;
 
+		[Button]
 		public void StartCombat() {
 			// Find all Actors on the scene.
 			combatActors = FindObjectsOfType<CombatActor>().ToList();
@@ -45,22 +37,32 @@ namespace Combat {
 				// Set up the actors and their communication with other battle systems.
 				//actor.InitializeStats();
 
-				actor.OnDamaged += () => combatHealthUpdater.UpdateHealth(actor);
+				// Create and add a new action points resolver for each actor
+				var newTurnResolver = new ActionPointsResolver(actor);
+				turnResolvers.Add(newTurnResolver);
+
+				actor.OnDamaged += () => portraitManager.UpdateHealth(actor);
 				actor.OnDeath += () => actor.statusList.Add(new Dead());
 
 				actor.OnTurnBegin += () => {
-					actionPanelUI.Populate(actor.actions);
-
+					if (actor.IsControlledByPlayer) {
+						actionPanelUI.PopulateActionPanel(actor);
+					}
+					else {
+						actionPanelUI.PopulateActionPanel(actor);
+						var enemy = (EnemyActor) actor; 
+						enemy.PerformRandomAction(enemy.GetTarget());
+					}
 				};
+
 				actor.OnTurnEnd += () => {
 					actionPanelUI.Clear();
+					newTurnResolver.SetCurrentAmount(0);
 					currentBattleState = BattleState.WAIT_FOR_NEXT_TURN;
 				};
-
-				// Add a new action points resolver for each actor
-				turnResolvers.Add(new ActionPointsResolver(actor));
 			}
 
+			portraitManager.Initialize(combatActors, () => currentBattleState = BattleState.WAIT_FOR_NEXT_TURN);
 			basePanel.SetActive(true);
 		}
 
@@ -75,6 +77,7 @@ namespace Combat {
 			foreach (var t in turnResolvers) {
 				if (!t.canPassTime) { continue; }
 				t.PassTime();
+				portraitManager.UpdateProgressBar(t.Actor, t.Percentage);
 				if (t.isReadyToTakeTurn) {
 					SelectActor(t.Actor);
 					return;
@@ -94,6 +97,8 @@ namespace Combat {
 			const float ActionPointsRequiredToTakeTurn = 100;
 			float currentActionPoints;
 
+			public float Percentage => Mathf.Clamp(currentActionPoints / ActionPointsRequiredToTakeTurn, 0, 1);
+
 			public ActionPointsResolver(CombatActor actor) { Actor = actor; }
 
 			public CombatActor Actor;
@@ -102,10 +107,11 @@ namespace Combat {
 			float actorSpeed => Actor.Speed;
 
 			public bool isReadyToTakeTurn => currentActionPoints >= ActionPointsRequiredToTakeTurn;
-
 			// Make sure dead or immobilized actors won't take any turns.
 			public bool canPassTime => !Actor.statusList.Any(x => x is Dead);
+
 			public void PassTime() { currentActionPoints += actorSpeed * Time.deltaTime; }
+			public void SetCurrentAmount(float value) { currentActionPoints = value; }
 		}
 	}
 

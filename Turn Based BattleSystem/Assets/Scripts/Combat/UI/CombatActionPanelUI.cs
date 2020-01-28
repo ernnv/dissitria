@@ -10,19 +10,29 @@ namespace Combat.UI {
 		public CombatActionButton ActionButtonPrefab;
 		public List<CombatActionButton> buttons;
 
-		public void Populate(List<CombatAction> actions) {
+		void Awake() => Clear();
+
+		public void PopulateActionPanel(CombatActor actor) {
+
 			Clear();
-			foreach (var ac in actions) {
+			AddDisabledButtonWithText(actor.Name);
+
+			foreach (var ac in actor.actions) {
 				var newButton = Instantiate(ActionButtonPrefab, transform);
 				newButton.SetData(ac);
 				buttons.Add(newButton);
+
+				// We don't want the enemy buttons to be interactable;
+				if (!actor.IsControlledByPlayer) { newButton.button.interactable = false; }
 			}
+
 			AddDisabledButtonWithText("Items");
 			AddDisabledButtonWithText("Flee");
 		}
 
 		public void Clear() {
-			foreach (var b in buttons) { Destroy(b.gameObject); }
+			//foreach (var b in buttons) { Destroy(b.gameObject); } // for later, maybe.
+			foreach (Transform child in transform) { Destroy(child.gameObject); }
 			buttons.Clear();
 		}
 

@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1287327700025525489}
-  - component: {fileID: 122477750877980399}
+  - component: {fileID: 2026694129}
+  - component: {fileID: 4013337989610676907}
   m_Layer: 0
   m_Name: Enermy1
   m_TagString: Enemy
@@ -32,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &122477750877980399
+--- !u!114 &2026694129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,23 +42,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 122477750877980398}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34283a9a345efe24b891dfc0d02ed1bd, type: 3}
+  m_Script: {fileID: 11500000, guid: eb5a9d2450528b643931b091d9fda970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy:
-    enemyType: 5
-    enemyRarity: 0
-    name: Cyclop
-    baseHP: 18
-    currentHP: 18
-    baseMP: 5
-    currentMP: 5
-    baseATK: 8
-    currentATK: 8
-    baseDEF: 8
-    currentDEF: 8
-  currentState: 0
-  targetToAttack: {fileID: 0}
+  actions:
+  - {fileID: 11400000, guid: f69d8364aaeff174081f0a25aba58490, type: 2}
+  Name: Cyclop
+  CurrentHP: 200
+  MaxHP: 200
+  Speed: 9
+  PortraitSprite: {fileID: -5893027731062749566, guid: 94952305fddbf1e4aa2c8696d079d097,
+    type: 3}
+  HandleSprite: {fileID: -5649393104943971611, guid: 94952305fddbf1e4aa2c8696d079d097,
+    type: 3}
+--- !u!70 &4013337989610676907
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122477750877980398}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2.1026397, y: 3.5751061}
+  m_Direction: 0
 --- !u!1 &7325006203753174009
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +96,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7325006203753174009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -0.05, z: 2}
+  m_LocalPosition: {x: 0.01, y: -0.05, z: 0}
   m_LocalScale: {x: -93.04596, y: 77.54997, z: 1}
   m_Children: []
   m_Father: {fileID: 1287327700025525489}

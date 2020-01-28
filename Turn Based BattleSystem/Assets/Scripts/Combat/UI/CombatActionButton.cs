@@ -8,6 +8,8 @@ namespace Combat.UI {
 		public Button button;
 		public Text text;
 
+		static CombatActionButton CurrentlySelectedButton;
+
 		public void Disable() {
 			button.interactable = false;
 		}
@@ -22,9 +24,15 @@ namespace Combat.UI {
 		}
 
 		void SelectThis(CombatAction action) {
+
+			if (CurrentlySelectedButton != null && CurrentlySelectedButton != this) { CurrentlySelectedButton.DeselectThis(); }
+			CurrentlySelectedButton = this;
+
 			button.image.color = new Color(0.8f, 1, 0.8f);
 			CombatTargetSelector.instance.SetSelectedAction(action);
-			CombatTargetSelector.instance.OnChangeSelect += () => button.image.color = Color.white;
+			CombatTargetSelector.instance.OnSelectionChanged += () => DeselectThis();
 		}
+
+		void DeselectThis() { button.image.color = Color.white; }
 	}
 }

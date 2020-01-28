@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Combat.Actions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Combat {
 	[CreateAssetMenu(fileName = "New Action", menuName = "Actions/Empty", order = 0)]
-	public class CombatAction : ScriptableObject {
+	public class CombatAction : SerializedScriptableObject {
+		[Space]
 		public string Name;
 		public ActionTargets targets;
 
@@ -17,6 +19,10 @@ namespace Combat {
 			}
 		}
 
+#if UNITY_EDITOR
+		[Button, PropertyOrder(-1)]
+		void SelectObjectInProject() => UnityEditor.EditorGUIUtility.PingObject(this);
+#endif
 	}
 }
 
@@ -32,18 +38,14 @@ namespace Combat.Actions {
 		public AdjustType AdjustingType;
 		public int Amount;
 
-		public override void Apply(CombatActor source, CombatActor target) {
-			Debug.Log("Debuffs not implemented");
-		}
+		public override void Apply(CombatActor source, CombatActor target) => Debug.Log("Debuffs not implemented");
 
 	}
 
 	public class ApplyDamage : CombatActionSequencePiece {
 		public int Damage;
 
-		public override void Apply(CombatActor source, CombatActor target) {
-			target.TakeDamage(Damage);
-		}
+		public override void Apply(CombatActor source, CombatActor target) => target.TakeDamage(Damage);
 	}
 
 }

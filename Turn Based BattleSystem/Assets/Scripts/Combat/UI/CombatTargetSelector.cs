@@ -9,20 +9,30 @@ namespace Combat.UI {
 
 
 
-		public System.Action OnChangeSelect { get; set; }
+		public System.Action OnSelectionChanged { get; set; }
 		public CombatAction SelectedAction { get; set; }
 
 		public void SetSelectedAction(CombatAction action) {
-			if (OnChangeSelect != null) { OnChangeSelect(); }
-			OnChangeSelect = null;
+			if (OnSelectionChanged != null && SelectedAction != action) { OnSelectionChanged(); }
+			OnSelectionChanged = null;
 			SelectedAction = action;
 		}
 
 		public static CombatTargetSelector instance;
-		void Awake() { instance = this; }
+
+		public float UpwardsAmount = 2.5f;
+
+		SpriteRenderer spr;
+		void Awake() {
+			instance = this;
+			spr = GetComponent<SpriteRenderer>();
+		}
 
 		void Update() {
-			if (SelectedAction = null) { return; }
+			if (SelectedAction == null) {
+				DisableSprite();
+				return;
+			}
 
 			// Cancel the selection.
 			if (Input.GetMouseButtonDown(1)) {
@@ -30,27 +40,41 @@ namespace Combat.UI {
 				return;
 			}
 
+			// Get all colliders under the mouse
 			var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			var hits = Physics2D.OverlapPointAll(mousePos);
 
-			// Search for enemies under the mouse
+			CombatActor target = null;
+			// Search for valid targets under the mouse
 			foreach (var collider in hits) {
-				if (collider.tag != "Enemy") { continue; }
-				var target = collider.GetComponent<CombatActor>();
 
-				Debug.Log("Targeting " + target);
+				// To be altered when we implement multiple target types (allies, self, etc)
+				if (SelectedAction.targets == CombatAction.ActionTargets.Enemies && collider.tag != "Enemy") { continue; }
+				else if (SelectedAction.targets == CombatAction.ActionTargets.Allies && collider.tag != "Hero") { continue; }
+
+				target = collider.GetComponent<CombatActor>();
+
+				// Enable sprite and Set Position
+				EnableSprite();
+				transform.position = target.transform.position + Vector3.up * UpwardsAmount;
 
 				// If user left clicks, apply action and end turn.
 				if (Input.GetMouseButtonDown(0)) {
-					// To be later resolved with an CombatTurnActionResolver
+					// To be later resolved with an CombatActionResolver (action to be injected under the animation).
 					SelectedAction.ApplyAction(BattleManager.instance.CurrentActor, target);
 					SetSelectedAction(null);
 					BattleManager.instance.CurrentActor.OnTurnEnd();
-					return;
+					break;
 				}
 
 			}
+
+			if (target == null) { DisableSprite(); }
+
 		}
+
+		void DisableSprite() { spr.enabled = false; }
+		void EnableSprite() { spr.enabled = true; }
 
 	}
 }
