@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435642310681606871}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 0.05, z: 2}
+  m_LocalPosition: {x: 0.07, y: 0.05, z: 0}
   m_LocalScale: {x: 32.42253, y: 32.49483, z: 1}
   m_Children: []
   m_Father: {fileID: 8841357538245081199}
@@ -88,7 +88,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8841357538245081199}
-  - component: {fileID: 1839096566}
+  - component: {fileID: 1624998688}
+  - component: {fileID: 5390292758711225034}
   m_Layer: 0
   m_Name: Hero2
   m_TagString: Hero
@@ -111,7 +112,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1839096566
+--- !u!114 &1624998688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,21 +121,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 8553146184089878031}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c72d6c73b7a7b6c408b1d08f1818a574, type: 3}
+  m_Script: {fileID: 11500000, guid: f45cc8864d53ac84d90b03ef4ff127f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hero:
-    name: Zugga
-    level: 1
-    baseHP: 13
-    currentHP: 13
-    baseMP: 20
-    currentMP: 20
-    speed: 7
-    avoidance: 0
-    stamina: 7
-    intellect: 25
-    dexterity: 5
-    agility: 10
-  currentState: 0
-  ProgressBar: {fileID: 0}
+  actions:
+  - {fileID: 11400000, guid: 99555b75624f2fb41a297048317d29ed, type: 2}
+  - {fileID: 11400000, guid: 65209812de4092e47a396e97e933e395, type: 2}
+  Name: Zugga
+  CurrentHP: 100
+  MaxHP: 100
+  Speed: 15
+  PortraitSprite: {fileID: 124597808738184449, guid: 49666aebf5781314a9a8dd52f2c48711,
+    type: 3}
+  HandleSprite: {fileID: -5952614599661017137, guid: 49666aebf5781314a9a8dd52f2c48711,
+    type: 3}
+--- !u!70 &5390292758711225034
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553146184089878031}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.15659475}
+  m_Size: {x: 1.5467668, y: 2.2895803}
+  m_Direction: 0

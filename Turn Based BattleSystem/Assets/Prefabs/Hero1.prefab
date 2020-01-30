@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8471357817222304454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.06, y: -0.03, z: 2}
+  m_LocalPosition: {x: 0.06, y: -0.03, z: 0}
   m_LocalScale: {x: 65.20472, y: 66.64819, z: 1}
   m_Children: []
   m_Father: {fileID: 868307540833667349}
@@ -89,7 +89,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 868307540833667349}
-  - component: {fileID: 1094123142}
+  - component: {fileID: 1447226335}
+  - component: {fileID: 8531101556842668633}
   m_Layer: 0
   m_Name: Hero1
   m_TagString: Hero
@@ -112,7 +113,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1094123142
+--- !u!114 &1447226335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,21 +122,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 9012521980751970744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c72d6c73b7a7b6c408b1d08f1818a574, type: 3}
+  m_Script: {fileID: 11500000, guid: f45cc8864d53ac84d90b03ef4ff127f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hero:
-    name: Gonzou
-    level: 1
-    baseHP: 20
-    currentHP: 20
-    baseMP: 10
-    currentMP: 10
-    speed: 10
-    avoidance: 10
-    stamina: 20
-    intellect: 10
-    dexterity: 10
-    agility: 10
-  currentState: 0
-  ProgressBar: {fileID: 0}
+  actions:
+  - {fileID: 11400000, guid: f69d8364aaeff174081f0a25aba58490, type: 2}
+  - {fileID: 11400000, guid: c4c3084d592e0fd4e8d1375c3c6b321e, type: 2}
+  Name: Gonzou
+  CurrentHP: 125
+  MaxHP: 125
+  Speed: 10
+  PortraitSprite: {fileID: -2991773290986861209, guid: c5e650a4d1ff38f4e94dcba6a592d573,
+    type: 3}
+  HandleSprite: {fileID: -215884644848103954, guid: c5e650a4d1ff38f4e94dcba6a592d573,
+    type: 3}
+--- !u!70 &8531101556842668633
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9012521980751970744}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.44505787, y: -0.09065962}
+  m_Size: {x: 1.9707708, y: 2.833343}
+  m_Direction: 0
